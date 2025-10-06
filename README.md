@@ -26,33 +26,25 @@ The application uses a RAG (Retrieval-Augmented Generation) pipeline:
 - Python 3.8+
 - 8GB+ RAM recommended for model inference
 - CPU-based inference (no GPU required)
-- Git LFS (for storing model files) - [Install Git LFS](https://git-lfs.github.com/)
 
 ## Installation
 
-1. **Install Git LFS** (if not already installed)
+1. **Clone the repository**
    ```bash
-   # On macOS
-   brew install git-lfs
-
-   # On Ubuntu/Debian
-   sudo apt-get install git-lfs
-
-   # On Windows (using chocolatey)
-   choco install git-lfs
-
-   # Initialize Git LFS
-   git lfs install
+   git clone https://github.com/senghok510/chat_bot_climate.git
+   cd chat_bot_climate
    ```
 
-2. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd Chat_bot_Climate
+2. **Download the LaMini-T5-738M model**
 
-   # Pull LFS files (model files)
-   git lfs pull
+   The model files are not included in this repository due to size constraints. Download the model from HuggingFace:
+
+   ```bash
+   # Using Python
+   python -c "from transformers import AutoTokenizer, AutoModelForSeq2SeqLM; AutoTokenizer.from_pretrained('MBZUAI/LaMini-T5-738M').save_pretrained('LaMini-T5-738M'); AutoModelForSeq2SeqLM.from_pretrained('MBZUAI/LaMini-T5-738M').save_pretrained('LaMini-T5-738M')"
    ```
+
+   Alternatively, the model will be automatically downloaded from HuggingFace on first run, but saving it locally improves startup time.
 
 3. **Create a virtual environment** (recommended)
    ```bash
@@ -147,33 +139,10 @@ See [requirements.txt](requirements.txt) for complete dependency list.
 - **Memory Usage**: Approximately 2-3GB RAM for model and embeddings
 - **Caching**: Streamlit caches the model and vector store for faster subsequent runs
 
-## Git LFS Setup for Model Storage
+## Important Notes
 
-This repository uses Git LFS to handle large model files. The [.gitattributes](.gitattributes) file is configured to track:
-
-- Model weights (`.bin`, `.safetensors`, `.pth`, `.pt`)
-- PDF documents (`.pdf`)
-- Database files (`.db`, `.sqlite`, `.parquet`)
-
-### Pushing Model Files to GitHub
-
-If you've downloaded the LaMini-T5-738M model locally and want to push it:
-
-```bash
-# Ensure Git LFS is tracking the files
-git lfs track "*.bin"
-git lfs track "*.safetensors"
-
-# Add and commit the model files
-git add .gitattributes
-git add LaMini-T5-738M/
-git commit -m "Add LaMini-T5-738M model via Git LFS"
-
-# Push (LFS will handle large files)
-git push origin main
-```
-
-**Note**: The `db/` directory (vector database) is gitignored as it's generated locally and can be large.
+- **Model Files**: The `LaMini-T5-738M/` directory is excluded from this repository due to GitHub's file size limitations (2.7GB). Users must download the model separately as described in the installation steps.
+- **Database Directory**: The `db/` directory (vector database) is gitignored as it's generated locally during first run.
 
 ## Troubleshooting
 

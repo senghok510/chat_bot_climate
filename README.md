@@ -21,11 +21,6 @@ The application uses a RAG (Retrieval-Augmented Generation) pipeline:
 4. **Retrieval**: User queries are matched against the vector database
 5. **Generation**: Retrieved context is fed to LaMini-T5 for answer generation
 
-## Prerequisites
-
-- Python 3.8+
-- 8GB+ RAM recommended for model inference
-- CPU-based inference (no GPU required)
 
 ## Installation
 
@@ -74,17 +69,6 @@ Start the Streamlit app:
 streamlit run chatbot_app.py
 ```
 
-The application will:
-- Automatically ingest PDFs on first run (creates `db/` directory)
-- Download the LaMini-T5-738M model if not cached
-- Launch a web interface at `http://localhost:8501`
-
-### Using the Application
-
-1. Wait for the initial setup (vector store creation)
-2. Enter your question in the text area
-3. Click "Search" to get an answer
-4. View the response and optional debug information
 
 ### Example Queries
 
@@ -92,21 +76,6 @@ The application will:
 - "Explain the impact of climate change on sea levels"
 - "What mitigation strategies are recommended?"
 
-## Project Structure
-
-```
-Chat_bot_Climate/
-├── chatbot/
-│   ├── __init__.py          # Package initialization
-│   ├── config_chroma.py     # ChromaDB configuration
-│   └── preprocess.py        # PDF ingestion and processing
-├── docs/                    # PDF documents directory
-├── db/                      # Vector database (generated)
-├── chatbot_app.py          # Main Streamlit application
-├── cli_demo.py             # Command-line interface demo
-├── requirements.txt        # Python dependencies
-└── README.md              # This file
-```
 
 ## Configuration
 
@@ -138,33 +107,8 @@ See [requirements.txt](requirements.txt) for complete dependency list.
 - **Inference Speed**: CPU-based generation takes 5-15 seconds per query
 - **Memory Usage**: Approximately 2-3GB RAM for model and embeddings
 - **Caching**: Streamlit caches the model and vector store for faster subsequent runs
-
-## Important Notes
-
 - **Model Files**: The `LaMini-T5-738M/` directory is excluded from this repository due to GitHub's file size limitations (2.7GB). Users must download the model separately as described in the installation steps.
-- **Database Directory**: The `db/` directory (vector database) is gitignored as it's generated locally during first run.
 
-## Troubleshooting
-
-### Common Issues
-
-**Meta tensor errors on CPU**
-- The application includes fallback logic for CPU-only environments
-- Ensures models load with `device_map=None`
-
-**ChromaDB version conflicts**
-- Using ChromaDB 0.3.26 for compatibility
-- Falls back to legacy `client_settings` if needed
-
-**Out of memory**
-- Reduce `chunk_size` in PDFIngestion
-- Lower `max_length` in the text generation pipeline
-- Close other applications to free RAM
-
-**No answers returned**
-- Verify PDFs are in the `docs/` directory
-- Check the `db/` directory was created successfully
-- Ensure questions are relevant to the document content
 
 ## Contributing
 
@@ -175,10 +119,6 @@ Contributions are welcome! Areas for improvement:
 - Chat history and conversation context
 - Advanced retrieval strategies (hybrid search, re-ranking)
 
-## License
-
-See LICENSE file for details.
-
 ## Acknowledgments
 
 - Built with [LangChain](https://www.langchain.com/)
@@ -186,6 +126,3 @@ See LICENSE file for details.
 - Embeddings: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 - Default dataset: IPCC AR6 Synthesis Report
 
-## Contact
-
-For questions or issues, please open an issue on the repository.
